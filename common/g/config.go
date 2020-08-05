@@ -86,6 +86,14 @@ func Conf() *GlobalConfig {
 }
 
 func InitConfig() {
+	var (
+		bs        []byte
+		cfgFile   string
+		err       error
+		maxMemMB  int
+		maxCPUNum int
+	)
+
 	flag.Parse()
 
 	if *v {
@@ -98,39 +106,39 @@ func InitConfig() {
 		os.Exit(0)
 	}
 
-	cfgFile := *cfg
+	cfgFile = *cfg
 	ConfigFile = cfgFile
 
 	if cfgFile == "" {
 		dlog.Fatal("config file not specified: use -c $filename")
 	}
 
-	if _, err := os.Stat(cfgFile); os.IsNotExist(err) {
+	if _, err = os.Stat(cfgFile); os.IsNotExist(err) {
 		dlog.Fatalf("config file specified not found: %s", cfgFile)
 	} else {
 		dlog.Infof("use config file: %s", ConfigFile)
 	}
 
-	if bs, err := ioutil.ReadFile(cfgFile); err != nil {
+	if bs, err = ioutil.ReadFile(cfgFile); err != nil {
 		dlog.Fatalf("read config file failed: %s", err.Error())
 	} else {
-		if err := json.Unmarshal(bs, &config); err != nil {
+		if err = json.Unmarshal(bs, &config); err != nil {
 			dlog.Fatalf("decode config file failed: %s", err.Error())
 		} else {
 			dlog.Infof("load config success from %s", cfgFile)
 		}
 	}
 
-	if err := Validator(); err != nil {
+	if err = Validator(); err != nil {
 		dlog.Errorf("validator config file fail: %s", err)
 		os.Exit(127)
 	}
 
 	// 最大使用内存
-	maxMemMB := utils.CalculateMemLimit(config.MaxMemRate)
+	maxMemMB = utils.CalculateMemLimit(config.MaxMemRate)
 
 	// 最大cpu核数
-	maxCPUNum := utils.GetCPULimitNum(config.MaxCPURate)
+	maxCPUNum = utils.GetCPULimitNum(config.MaxCPURate)
 
 	dlog.Infof("bind [%d] cpu core", maxCPUNum)
 	runtime.GOMAXPROCS(maxCPUNum)
@@ -139,21 +147,26 @@ func InitConfig() {
 }
 
 func ReloadConfig() error {
-	if _, err := os.Stat(ConfigFile); os.IsNotExist(err) {
+	var (
+		bs  []byte
+		err error
+	)
+
+	if _, err = os.Stat(ConfigFile); os.IsNotExist(err) {
 		dlog.Fatalf("config file specified not found: %s", ConfigFile)
 		return err
 	} else {
 		dlog.Infof("reload config file: %s", ConfigFile)
 	}
 
-	if bs, err := ioutil.ReadFile(ConfigFile); err != nil {
+	if bs, err = ioutil.ReadFile(ConfigFile); err != nil {
 		dlog.Fatalf("reload config file failed: %s", err)
 		return err
 	} else {
 		configFileLock.RLock()
 		defer configFileLock.RUnlock()
 
-		if err := json.Unmarshal(bs, &config); err != nil {
+		if err = json.Unmarshal(bs, &config); err != nil {
 			dlog.Fatalf("decode config file failed: %s", err)
 			return err
 		} else {
@@ -161,7 +174,7 @@ func ReloadConfig() error {
 		}
 	}
 
-	if err := Validator(); err != nil {
+	if err = Validator(); err != nil {
 		dlog.Errorf("validator config file fail: %s", err)
 		return err
 	}
