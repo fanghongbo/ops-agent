@@ -3,8 +3,8 @@ package g
 import "fmt"
 
 var (
-	BinaryName string
-	Version    string
+	BinaryName string = "ops-agent.dev"
+	Version    string = "v0.1"
 )
 
 func VersionInfo() string {
