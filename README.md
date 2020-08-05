@@ -5,13 +5,13 @@
 ## 特性
 
 - 代码重构、移除无用的接口和配置信息;
-- 重写 url metric 的 probeUrl方法, 使用 go http 库替代使用系统 curl 命令来探测 url;
-- 重写 /plugin/update 接口, 使用 go-git 库替代使用系统的git命令来更新插件仓库;
+- 重写url metric的probeUrl方法, 使用go http库替代使用系统curl命令来探测url;
+- 重写/plugin/update接口, 使用go-git库替代使用系统的git命令来更新插件仓库;
 - 新增从私有git仓库同步插件功能;
 - 新增运行日志配置, 支持日志滚动;
-- 新增 /metrics 接口, 支持查看当前监控的所有 metric;
-- 新增 /metric/check 接口, 支持查看当前系统 metric 依赖环境;
-- 新增 cpu核心绑定、内存阈值配置; 当 agent 内存达到阈值的50%时, 打印告警信息；当内存达到阈值的100%, 程序直接退出;
+- 新增/metrics接口, 支持查看当前监控的所有metric;
+- 新增/metric/check接口, 支持查看当前系统metric依赖环境;
+- 新增cpu核心绑定、内存阈值配置; 当agent内存达到阈值的50%时, 打印告警信息；当内存达到阈值的100%, 程序直接退出;
 
 
 ## 编译
