@@ -7,9 +7,9 @@ import (
 
 func InitAll() {
 	InitConfig()    // 初始化配置文件
+	InitLog()       // 初始化日志
 	InitRuntime()   // 初始化运行环境
 	InitLocalIp()   // 初始化本地ip
-	InitLog()       // 初始化日志
 	InitHbsClient() // 初始化hbs rpc客户端
 }
 
