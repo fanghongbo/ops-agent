@@ -238,7 +238,7 @@ func Validator() error {
 	// http 设置
 	if config.Http.Enabled {
 		if config.Http.Listen == "" {
-			return errors.New("local listen addr is empty")
+			return errors.New("http listen addr is empty")
 		}
 	}
 
