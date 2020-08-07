@@ -53,7 +53,7 @@ func reportAgentStatus() {
 
 		err = g.HbsClient.Call("Agent.ReportStatus", req, &resp)
 		if err != nil || resp.Code != 0 {
-			dlog.Errorf("call Agent.ReportStatus fail: %s Request: %s Response: %s", err, req, resp)
+			dlog.Errorf("call Agent.ReportStatus fail: %s", err)
 			continue
 		}
 	}
