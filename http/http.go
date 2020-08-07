@@ -7,24 +7,30 @@ import (
 )
 
 func Start() {
+	var (
+		addr string
+		s    *http.Server
+		err  error
+	)
+
 	if !g.Conf().Http.Enabled {
 		dlog.Warning("http is disable")
 		return
 	}
 
-	addr := g.Conf().Http.Listen
+	addr = g.Conf().Http.Listen
 	if addr == "" {
 		return
 	}
 
-	s := &http.Server{
+	s = &http.Server{
 		Addr:           addr,
 		MaxHeaderBytes: 1 << 30,
 	}
 
 	dlog.Infof("listening %s", addr)
 
-	if err := s.ListenAndServe(); err != nil {
+	if err = s.ListenAndServe(); err != nil {
 		dlog.Fatalf("start http server err: %s", err)
 	}
 }

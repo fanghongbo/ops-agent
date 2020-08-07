@@ -52,7 +52,9 @@ func init() {
 
 	http.HandleFunc("/config/reload", func(w http.ResponseWriter, r *http.Request) {
 		if IsLocalRequest(r) {
-			if err := g.ReloadConfig(); err != nil {
+			var err error
+
+			if err = g.ReloadConfig(); err != nil {
 				w.WriteHeader(http.StatusBadRequest)
 				RenderJson(w, map[string]interface{}{
 					"success": false,
@@ -78,7 +80,9 @@ func init() {
 
 	http.HandleFunc("/metrics", func(w http.ResponseWriter, r *http.Request) {
 		if IsLocalRequest(r) {
-			data := GetMetrics()
+			var data []map[string]interface{}
+
+			data = GetMetrics()
 			RenderJson(w, map[string]interface{}{
 				"success": true,
 				"msg":     "query success",
@@ -96,7 +100,9 @@ func init() {
 
 	http.HandleFunc("/metric/check", func(w http.ResponseWriter, r *http.Request) {
 		if IsLocalRequest(r) {
-			data := metrics.CheckCollector()
+			var data map[string]bool
+
+			data = metrics.CheckCollector()
 			RenderJson(w, map[string]interface{}{
 				"success": true,
 				"msg":     "query success",

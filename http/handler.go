@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/fanghongbo/dlog"
 	"github.com/fanghongbo/ops-agent/common/g"
 	"github.com/fanghongbo/ops-agent/common/git"
 	"github.com/fanghongbo/ops-agent/metrics"
@@ -12,7 +13,11 @@ import (
 )
 
 func IsLocalRequest(r *http.Request) bool {
-	addr := strings.Split(r.RemoteAddr, ":")
+	var (
+		addr []string
+	)
+
+	addr = strings.Split(r.RemoteAddr, ":")
 	if addr[0] == "127.0.0.1" {
 		return true
 	}
@@ -20,20 +25,30 @@ func IsLocalRequest(r *http.Request) bool {
 }
 
 func RenderJson(w http.ResponseWriter, v interface{}) {
-	bs, err := json.Marshal(v)
+	var (
+		bs  []byte
+		err error
+	)
+
+	bs, err = json.Marshal(v)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
-	_, _ = w.Write(bs)
+	if _, err = w.Write(bs); err != nil {
+		dlog.Errorf("response err: %s", err)
+	}
 }
 
 func GetMetrics() []map[string]interface{} {
-	var data []map[string]interface{}
+	var (
+		data    []map[string]interface{}
+		mappers []metrics.MetricFunc
+	)
 
-	mappers := metrics.InitMetricFuncMappers()
+	mappers = metrics.InitMetricFuncMappers()
 	for _, item := range mappers {
 		for _, fs := range item.Fs {
 			res := fs()
