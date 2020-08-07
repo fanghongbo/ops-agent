@@ -55,7 +55,7 @@ func RenderJson(w http.ResponseWriter, v interface{}) {
 
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 	if _, err = w.Write(bs); err != nil {
-		dlog.Errorf("response err: %s", err)
+		dlog.Errorf("http response err: %s", err)
 	}
 }
 
