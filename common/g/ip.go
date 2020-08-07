@@ -82,14 +82,14 @@ func Hostname() (string, error) {
 	hostname = Conf().Hostname
 	if hostname != "" {
 		// use hostname in configuration
-		return hostname, nil
+		return strings.TrimSpace(hostname), nil
 	}
 
 	hostname, err = LocalHostname()
 	if err != nil {
 		dlog.Errorf("get system hostname err: %s", err)
 	}
-	return hostname, err
+	return strings.TrimSpace(hostname), err
 }
 
 func IP() string {
@@ -105,5 +105,5 @@ func IP() string {
 		ip = LocalIp
 	}
 
-	return ip
+	return strings.TrimSpace(ip)
 }
