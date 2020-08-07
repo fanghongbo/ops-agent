@@ -8,19 +8,36 @@ import (
 	"github.com/fanghongbo/ops-agent/common/g"
 	"github.com/fanghongbo/ops-agent/common/git"
 	"github.com/fanghongbo/ops-agent/metrics"
+	"net"
 	"net/http"
 	"strings"
 )
 
 func IsLocalRequest(r *http.Request) bool {
 	var (
-		addr []string
+		remoteAddr []string
+		localAddr  []net.Addr
+		err        error
 	)
 
-	addr = strings.Split(r.RemoteAddr, ":")
-	if addr[0] == "127.0.0.1" {
-		return true
+	remoteAddr = strings.Split(r.RemoteAddr, ":")
+
+	localAddr, err = net.InterfaceAddrs()
+	if err != nil {
+		dlog.Errorf("get local address err: %s", err)
+		return false
 	}
+
+	for _, item := range localAddr {
+		if ipNet, ok := item.(*net.IPNet); ok {
+			if ipNet.IP.To4() != nil {
+				if remoteAddr[0] == ipNet.IP.String() {
+					return true
+				}
+			}
+		}
+	}
+
 	return false
 }
 
