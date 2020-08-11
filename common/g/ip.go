@@ -12,10 +12,10 @@ import (
 var LocalIp string
 
 func InitLocalIp() {
-	if Conf().Heartbeat.Enabled {
-		conn, err := net.DialTimeout("tcp", Conf().Heartbeat.Addr, time.Second*10)
+	if config.Heartbeat != nil && config.Heartbeat.Enabled {
+		conn, err := net.DialTimeout("tcp", config.Heartbeat.Addr, time.Second*10)
 		if err != nil {
-			dlog.Errorf("connect to %s err: %s", Conf().Heartbeat.Addr, err)
+			dlog.Errorf("connect to %s err: %s", config.Heartbeat.Addr, err)
 		} else {
 			defer func() {
 				_ = conn.Close()
@@ -79,7 +79,7 @@ func Hostname() (string, error) {
 		err      error
 	)
 
-	hostname = Conf().Hostname
+	hostname = config.Hostname
 	if hostname != "" {
 		// use hostname in configuration
 		return strings.TrimSpace(hostname), nil
@@ -95,7 +95,7 @@ func Hostname() (string, error) {
 func IP() string {
 	var ip string
 
-	ip = Conf().IP
+	ip = config.IP
 	if ip != "" {
 		// use ip in configuration
 		return ip

@@ -10,11 +10,12 @@ import (
 )
 
 func SyncBuiltinMetrics() {
-	if g.Conf().Heartbeat.Enabled {
-		go syncBuiltinMetrics()
-	} else {
+	if g.Conf().Heartbeat == nil || !g.Conf().Heartbeat.Enabled {
 		dlog.Warning("heartbeat is disable, builtin metric collector does not work")
+		return
 	}
+
+	go syncBuiltinMetrics()
 }
 
 func syncBuiltinMetrics() {

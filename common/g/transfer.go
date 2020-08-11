@@ -19,7 +19,7 @@ var (
 func initTransferClient(addr string) *rpc.SingleConnRpcClient {
 	var c *rpc.SingleConnRpcClient = &rpc.SingleConnRpcClient{
 		RpcServer: addr,
-		Timeout:   time.Duration(Conf().Transfer.Timeout) * time.Millisecond,
+		Timeout:   time.Duration(config.Transfer.Timeout) * time.Millisecond,
 	}
 
 	TransferClientsLock.Lock()

@@ -184,27 +184,29 @@ func ReloadConfig() error {
 
 func Validator() error {
 	// 设置默认日志路径为 ./logs
-	if config.Log.LogPath == "" {
-		config.Log.LogPath = "./logs"
-	}
+	if config.Log != nil {
+		if config.Log.LogPath == "" {
+			config.Log.LogPath = "./logs"
+		}
 
-	// 设置默认日志文件名称为 run.log
-	if config.Log.LogFileName == "" {
-		config.Log.LogFileName = "run.log"
-	}
+		// 设置默认日志文件名称为 run.log
+		if config.Log.LogFileName == "" {
+			config.Log.LogFileName = "run.log"
+		}
 
-	// 设置默认日志级别为 LogLevel
-	if config.Log.LogLevel == "" {
-		config.Log.LogLevel = "INFO"
-	}
+		// 设置默认日志级别为 LogLevel
+		if config.Log.LogLevel == "" {
+			config.Log.LogLevel = "INFO"
+		}
 
-	// 设置默认保留24小时的日志
-	if config.Log.LogKeepHours == 0 {
-		config.Log.LogKeepHours = 24
+		// 设置默认保留24小时的日志
+		if config.Log.LogKeepHours == 0 {
+			config.Log.LogKeepHours = 24
+		}
 	}
 
 	// 插件设置
-	if config.Plugin.Enabled {
+	if config.Plugin != nil && config.Plugin.Enabled {
 		if config.Plugin.Dir == "" {
 			return errors.New("plugin dir is empty")
 		}
@@ -219,7 +221,7 @@ func Validator() error {
 	}
 
 	// 心跳设置
-	if config.Heartbeat.Enabled {
+	if config.Heartbeat != nil && config.Heartbeat.Enabled {
 		if config.Heartbeat.Addr == "" {
 			return errors.New("heartbeat addr is empty")
 		}
@@ -234,7 +236,7 @@ func Validator() error {
 	}
 
 	// transfer 设置
-	if config.Transfer.Enabled {
+	if config.Transfer != nil && config.Transfer.Enabled {
 		if len(config.Transfer.Addrs) == 0 {
 			return errors.New("transfer addrs is empty")
 		}
@@ -249,7 +251,7 @@ func Validator() error {
 	}
 
 	// http 设置
-	if config.Http.Enabled {
+	if config.Http != nil && config.Http.Enabled {
 		if config.Http.Listen == "" {
 			return errors.New("http listen addr is empty")
 		}

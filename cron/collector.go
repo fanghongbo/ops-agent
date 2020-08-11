@@ -9,7 +9,7 @@ import (
 )
 
 func Collect() {
-	if !g.Conf().Transfer.Enabled {
+	if g.Conf().Transfer == nil || !g.Conf().Transfer.Enabled {
 		dlog.Warning("transfer is disable, metric collector does not work")
 		return
 	}

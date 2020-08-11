@@ -14,12 +14,12 @@ import (
 )
 
 func SyncMinePlugins() {
-	if !g.Conf().Plugin.Enabled {
+	if g.Conf().Plugin == nil || !g.Conf().Plugin.Enabled {
 		dlog.Warning("plugin is disable, plugin does not work")
 		return
 	}
 
-	if !g.Conf().Heartbeat.Enabled {
+	if g.Conf().Heartbeat == nil || !g.Conf().Heartbeat.Enabled {
 		dlog.Warning("heartbeat is disable, plugin does not work")
 		return
 	}

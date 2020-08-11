@@ -167,7 +167,7 @@ func PluginRun(plugin *Plugin) {
 	)
 
 	timeout = plugin.Cycle*1000 - 500
-	filePath = filepath.Join(Conf().Plugin.Dir, plugin.FilePath)
+	filePath = filepath.Join(config.Plugin.Dir, plugin.FilePath)
 	args = plugin.Args
 
 	if !utils.FileIsExist(filePath) {
@@ -175,7 +175,7 @@ func PluginRun(plugin *Plugin) {
 		return
 	}
 
-	debug := Conf().Debug
+	debug := config.Debug
 	if debug {
 		dlog.Infof("plugin: %s args: (%s) running...", filePath, args)
 	}
@@ -206,7 +206,7 @@ func PluginRun(plugin *Plugin) {
 
 	errStr = stderr.String()
 	if errStr != "" {
-		logFile := filepath.Join(Conf().Plugin.LogDir, plugin.FilePath+"("+plugin.Args+")"+".stderr.log")
+		logFile := filepath.Join(config.Plugin.LogDir, plugin.FilePath+"("+plugin.Args+")"+".stderr.log")
 		if _, err = utils.WriteString(logFile, errStr); err != nil {
 			dlog.Printf("write log to %s fail, error: %s", logFile, err)
 		}
@@ -262,7 +262,7 @@ func ListPlugins(scriptPath string) map[string]*Plugin {
 		return ret
 	}
 
-	absPath = filepath.Join(Conf().Plugin.Dir, scriptPath)
+	absPath = filepath.Join(config.Plugin.Dir, scriptPath)
 	fs, err = ioutil.ReadDir(absPath)
 	if err != nil {
 		dlog.Errorf("can not list files under %s", absPath)

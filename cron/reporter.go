@@ -10,11 +10,12 @@ import (
 )
 
 func ReportAgentStatus() {
-	if g.Conf().Heartbeat.Enabled {
-		go reportAgentStatus()
-	} else {
+	if g.Conf().Heartbeat == nil || !g.Conf().Heartbeat.Enabled {
 		dlog.Warning("heartbeat is disable, agent status does not sent")
+		return
 	}
+
+	go reportAgentStatus()
 }
 
 func reportAgentStatus() {

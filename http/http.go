@@ -13,7 +13,7 @@ func Start() {
 		err  error
 	)
 
-	if !g.Conf().Http.Enabled {
+	if g.Conf().Http == nil || !g.Conf().Http.Enabled {
 		dlog.Warning("http is disable")
 		return
 	}

@@ -79,7 +79,7 @@ func (u *SingleConnRpcClient) Call(method string, args interface{}, reply interf
 
 	select {
 	case <-time.After(timeout):
-		dlog.Infof("rpc call timeout %v => %v", u.rpcClient, u.RpcServer)
+		dlog.Errorf("rpc call timeout %v => %v", u.rpcClient, u.RpcServer)
 		u.Close()
 		return errors.New(u.RpcServer + " rpc call timeout")
 	case err := <-done:

@@ -10,10 +10,10 @@ var (
 )
 
 func InitHbsClient() {
-	if Conf().Heartbeat.Enabled {
+	if config.Heartbeat != nil && config.Heartbeat.Enabled {
 		HbsClient = &rpc.SingleConnRpcClient{
-			RpcServer: Conf().Heartbeat.Addr,
-			Timeout:   time.Duration(Conf().Heartbeat.Timeout) * time.Millisecond,
+			RpcServer: config.Heartbeat.Addr,
+			Timeout:   time.Duration(config.Heartbeat.Timeout) * time.Millisecond,
 		}
 	}
 }
