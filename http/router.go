@@ -56,14 +56,14 @@ func init() {
 		}
 	})
 
-	http.HandleFunc("/v1/push", func(w http.ResponseWriter, req *http.Request) {
+	http.HandleFunc("/v1/push", func(w http.ResponseWriter, r *http.Request) {
 		var (
 			metric  []*model.MetricValue
 			err     error
 			decoder *json.Decoder
 		)
 
-		if req.ContentLength == 0 {
+		if r.ContentLength == 0 {
 			w.WriteHeader(http.StatusBadRequest)
 			RenderJson(w, map[string]interface{}{
 				"success": false,
@@ -73,7 +73,7 @@ func init() {
 			return
 		}
 
-		decoder = json.NewDecoder(req.Body)
+		decoder = json.NewDecoder(r.Body)
 		err = decoder.Decode(&metric)
 		if err != nil {
 			w.WriteHeader(http.StatusBadRequest)
