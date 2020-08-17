@@ -31,6 +31,6 @@ func Start() {
 	dlog.Infof("listening %s", addr)
 
 	if err = s.ListenAndServe(); err != nil {
-		dlog.Fatalf("start http server err: %s", err)
+		dlog.Fatal(err)
 	}
 }
